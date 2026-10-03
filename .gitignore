@@ -1,0 +1,63 @@
+# =========================
+# Ansible
+# =========================
+
+*.retry
+
+# Local Ansible inventory
+# Contains credentials and environment-specific settings
+inventory
+
+
+# =========================
+# Secrets / Credentials
+# =========================
+
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+credentials.yml
+secrets.yml
+
+
+# =========================
+# SSH
+# =========================
+
+.ssh/
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+
+# =========================
+# Docker
+# =========================
+
+docker-compose.override.yml
+
+
+# =========================
+# OS / Editor Files
+# =========================
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+
+# =========================
+# Temporary / Backup Files
+# =========================
+
+*.swp
+*.swo
+*~
+*.bak

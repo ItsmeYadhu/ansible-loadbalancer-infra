@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ inventory_hostname }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .server {
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="server">
+
+    <h1>🚀 Backend Server</h1>
+
+    <p class="status">
+        NGINX is running
+    </p>
+
+    <p>
+        <strong>Server:</strong>
+        {{ inventory_hostname }}
+    </p>
+
+    <p>
+        <strong>Hostname:</strong>
+	{{ ansible_facts['hostname'] }}
+    </p>
+
+    <p>
+        <strong>Managed by:</strong>
+        Ansible
+    </p>
+
+</div>
+
+</body>
+</html>

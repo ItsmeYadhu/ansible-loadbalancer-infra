@@ -1,0 +1,62 @@
+- name: Configure backend web servers
+  hosts: webservers
+  become: true
+
+  tasks:
+
+    - name: Create custom web page
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Create health check endpoint
+      ansible.builtin.copy:
+        content: "OK\n"
+        dest: /var/www/html/health
+        mode: '0644'
+
+    - name: Verify NGINX configuration
+      ansible.builtin.command:
+        cmd: nginx -t
+      changed_when: false
+
+    - name: Check if NGINX is running
+      ansible.builtin.command:
+        cmd: pgrep -x nginx
+      register: nginx_process
+      changed_when: false
+      failed_when: false
+
+    - name: Start NGINX if not running
+      ansible.builtin.command:
+        cmd: nginx
+      when: nginx_process.rc != 0
+      changed_when: true
+
+- name: Configure NGINX load balancer
+  hosts: load_balancer
+  become: true
+
+  tasks:
+
+    - name: Deploy load balancer configuration
+      ansible.builtin.template:
+        src: templates/nginx-lb.conf.j2
+        dest: /etc/nginx/conf.d/loadbalancer.conf
+        mode: '0644'
+
+    - name: Remove default NGINX configuration
+      ansible.builtin.file:
+        path: /etc/nginx/conf.d/default.conf
+        state: absent
+
+    - name: Verify load balancer configuration
+      ansible.builtin.command:
+        cmd: nginx -t
+      changed_when: false
+
+    - name: Reload NGINX
+      ansible.builtin.command:
+        cmd: nginx -s reload
+      changed_when: true
